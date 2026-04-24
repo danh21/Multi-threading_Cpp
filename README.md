@@ -1,6 +1,6 @@
 # 📦 Project Name
 
-> Demo about ...
+> Multi-threading development
 
 ---
 
@@ -20,13 +20,15 @@
 
 ## 📝 About
 
-> This is an app to ...
+> Demos about Multi-threading
 
 ---
 
 ## ✨ Features
 
-- ✅ ...
+- ✅ Create thread
+- ✅ Pass arguments (lambda, reference, move data)
+- ✅ Handle exception
 
 ---
 
@@ -35,17 +37,21 @@
 ### Prerequisites
 
 - List software dependencies or system requirements here:
-  - ...
+  - C++ compiler
 
 ### Source
 
-- *.
+- *.cpp: main source
 
 ### Usage
 
-- Start app
-- ...
+Run each file:
+- g++ main.cpp -o out
+- ./out.exe
+
+Run multiple files and collect log
+- ./run_and_doc.sh
 
 ### Reference
 
-- 
+- [Udemy] Learn Multithreading with Modern C++, James Raynard
