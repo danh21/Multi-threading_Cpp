@@ -1,0 +1,29 @@
+// A jthread object is safely destroyed
+// when an exception is thrown
+// Requires a compiler which supports C++20
+#include <thread>
+#include <iostream>
+
+using namespace std;
+
+// Callable object - thread entry point
+void hello()
+{
+	cout << "Hello, Thread!\n";
+}
+
+int main()
+{
+	try {
+		// Create an jthread object
+		jthread thr(hello);
+		
+		// Code that might throw an exception
+		throw exception();
+
+		// jthread's destructor will call join() if necessary
+	}
+	catch (exception& e) {
+		cout << "Exception caught: " << e.what() << '\n';
+	}
+}
