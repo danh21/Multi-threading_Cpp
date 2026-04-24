@@ -1,0 +1,47 @@
+// Another way to solve double-checked locking
+// Make the lazily-initialized variable atomic
+#include <mutex>
+#include <thread>
+#include <vector>
+#include <atomic>
+
+using namespace std;
+
+class Test {
+	// ...
+public:
+	void func() { /*...*/ }
+};
+
+atomic<Test*> ptest = nullptr;  // Variable to be lazily initialized
+mutex mut;
+
+void process()
+{
+	// First check of ptest
+	if (!ptest) {
+		lock_guard<mutex> lck_guard(mut);
+
+		// Second check of ptest
+		if (!ptest) {
+			// Initialize ptest
+			ptest = new Test;
+		}
+	}
+
+	// Atomic pointers cannot be dereferenced
+	// Copy it to a non-atomic pointer first
+	Test *ptr_test = ptest;
+	ptr_test->func();
+}
+
+int main()
+{
+	vector<thread> threads;
+
+	for (int i = 0; i < 10; ++i)
+		threads.push_back(thread(process));
+
+	for (auto& thr : threads)
+		thr.join();
+}

@@ -1,0 +1,25 @@
+// Demonstrate member functions of atomic types
+#include <iostream>
+#include <atomic>
+
+using namespace std;
+
+int main()
+{
+	atomic<int> x = 0;
+	cout << "After initialization: x = " << x << '\n';
+	
+	// Atomic assignment to x
+	x = 2;
+	
+	// Atomic assignment from x. y can be non-atomic
+	int y = x;
+	
+	cout << "After assignment: x = " << x << ", y = " << y << '\n';
+	
+	x.store(3);
+	cout << "After store: x = " << x.load() << '\n';
+	
+	cout << "Exchange returns " << x.exchange(y) << '\n';
+	cout << "After exchange: x = " << x << ", y = " << y << '\n';
+}

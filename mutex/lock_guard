@@ -1,0 +1,43 @@
+// Use lock_guard to avoid scrambled output
+#include <iostream>
+#include <mutex>
+#include <thread>
+#include <chrono>
+#include <string>
+
+using namespace std;
+using namespace std::literals;
+
+mutex print_mutex;
+
+void task(string str)
+{
+	for (int i = 0; i < 5; ++i) {
+		try {
+			// Create a lock_guard object
+			// This calls print_mutex.lock()
+			lock_guard<mutex> lck_guard(print_mutex);
+
+			// Start of critical section
+			cout << str[0] << str[1] << str[2] << endl;
+
+			// Critical section throws an exception
+			throw exception();
+			// End of critical section
+
+			this_thread::sleep_for(50ms);
+		}  // Calls ~lock_guard
+		catch (exception& e) {
+			cout << "Exception caught: " << e.what() << '\n';
+		}
+	}
+}
+
+int main()
+{
+	thread thr1(task, "abc");
+	thread thr2(task, "def");
+	thread thr3(task, "xyz");
+
+	thr1.join(); thr2.join(); thr3.join();
+}

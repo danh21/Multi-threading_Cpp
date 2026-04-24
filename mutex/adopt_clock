@@ -1,0 +1,51 @@
+// Use adopt_lock to avoid deadlock
+#include <thread>
+#include <mutex>
+#include <iostream>
+#include <chrono>
+
+using namespace std;
+using namespace std::literals;
+
+mutex mut1;
+mutex mut2;
+
+void funcA()
+{
+	cout << "Thread A trying to lock mutexes 1 and 2...\n";
+	lock(mut1, mut2);				               // Lock both mutexes
+	cout << "Thread A has locked mutexes 1 and 2\n";
+	
+	// Adopt the locks
+	unique_lock<mutex> uniq_lk1(mut1, adopt_lock);   // Associate each mutex
+	unique_lock<mutex> uniq_lk2(mut2, adopt_lock);   // with a unique_lock
+
+// 	unique_lock<mutex> uniq_lk1(mut1);   // Without adopt_lock, lock twice raises deadlock
+// 	unique_lock<mutex> uniq_lk2(mut2);
+	
+	cout << "Thread A has adopted the locks\n";
+	
+	this_thread::sleep_for(50ms);
+	cout << "Thread A releasing mutexes 1 and 2...\n";
+}
+
+void funcB() {
+	cout << "Thread B trying to lock mutexes 2 and 1...\n";
+	lock(mut2, mut1);				               // Lock both mutexes
+	cout << "Thread B has locked mutexes 2 and 1\n";
+	
+	// Adopt the locks
+	unique_lock<mutex> uniq_lk2(mut2, adopt_lock);   // with a unique_lock
+	unique_lock<mutex> uniq_lk1(mut1, adopt_lock);   // Associate each mutex
+	cout << "Thread B has adopted the locks\n";
+	
+	this_thread::sleep_for(50ms);
+	cout << "Thread B releasing mutexes 2 and 1...\n";
+}
+
+int main() {
+	thread thrA(funcA);
+	thread thrB(funcB);
+	
+	thrA.join(); thrB.join();
+}
