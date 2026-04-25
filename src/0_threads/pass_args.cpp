@@ -16,9 +16,9 @@ int main() {
 
 	thr.join();
 }
+
 /* === OUTPUT ===
- * Compiled : 2026-04-24 15:30:30
- * Command  : g++ ./thread_args.cpp -o out && ./out
+ * Command  : g++ ./pass_args.cpp -o out -lpthread && ./out
  *
  * Hello, Thread!
  */

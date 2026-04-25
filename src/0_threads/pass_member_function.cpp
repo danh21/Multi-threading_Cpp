@@ -24,9 +24,9 @@ int main() {
 
 	thr.join();
 }
+
 /* === OUTPUT ===
- * Compiled : 2026-04-24 15:30:36
- * Command  : g++ ./thread_member_function.cpp -o out && ./out
+ * Command  : g++ ./pass_member_function.cpp -o out -lpthread && ./out
  *
  * Hello, Member Function Thread!
  */

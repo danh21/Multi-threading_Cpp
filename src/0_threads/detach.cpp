@@ -1,0 +1,29 @@
+// thread and detach()
+#include <thread>
+#include <iostream>
+
+using namespace std;
+
+// Callable object - thread entry point
+void hello()
+{
+	cout << "Hello, Thread!\n";
+}
+
+int main()
+{
+	cout << "Main thread is running...\n";
+	// Create a thread object
+	thread thr(hello);
+
+	// Detach the child thread
+	thr.detach();
+
+	// Continue executing without waiting for the child thread
+}
+
+/* === OUTPUT ===
+ * Command  : g++ ./detach.cpp -o out -lpthread && ./out
+ *
+ * Main thread is running...
+ */

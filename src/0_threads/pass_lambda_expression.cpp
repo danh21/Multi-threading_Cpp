@@ -6,6 +6,8 @@
 using namespace std;
 
 int main() {
+    int i = 3;
+
 	// Use a lambda expression as the thread's entry point
 	thread thr(
 		// The first argument is the lambda expression
@@ -18,11 +20,22 @@ int main() {
 		2, 3
 	);
 
-	thr.join();
+	// Use a lambda expression as the thread's entry point
+	thread thr1(
+		// The first argument is the lambda expression
+		[&i] {
+		i *= 2;
+	});
+
+    thr.join();
+	thr1.join();
+
+	cout << "Value of i is now " << i << '\n';
 }
+
 /* === OUTPUT ===
- * Compiled : 2026-04-24 15:30:32
- * Command  : g++ ./thread_lambda_arg.cpp -o out && ./out
+ * Command  : g++ ./pass_lambda_expression.cpp -o out -lpthread && ./out
  *
  * The sum of 2 and 3 is 5
+ * Value of i is now 6
  */

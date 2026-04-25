@@ -23,9 +23,9 @@ int main() {
 	cout << "Do I still have any data?" << ' ';
 	cout << (str.empty() ? "No" : "Yes") << ".\n";
 }
+
 /* === OUTPUT ===
- * Compiled : 2026-04-24 15:30:38
- * Command  : g++ ./thread_move.cpp -o out && ./out
+ * Command  : g++ ./move_data.cpp -o out -lpthread && ./out
  *
  * Starting thread
  * Ownership of "moveable" transferred to thread
