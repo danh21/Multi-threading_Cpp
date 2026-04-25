@@ -17,7 +17,7 @@ int main()
 	try {
 		// Create an jthread object
 		jthread thr(hello);
-		
+
 		// Code that might throw an exception
 		throw exception();
 
@@ -27,3 +27,10 @@ int main()
 		cout << "Exception caught: " << e.what() << '\n';
 	}
 }
+
+/* === OUTPUT ===
+ * Command  : g++ ./jthread_exception.cpp -o out -std=c++23 -lpthread && ./out
+ *
+ * Hello, Thread!
+ * Exception caught: std::exception
+ */

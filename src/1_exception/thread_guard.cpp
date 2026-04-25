@@ -48,9 +48,9 @@ int main()
 		cout << "Exception caught: " << e.what() << '\n';
 	}
 }
+
 /* === OUTPUT ===
- * Compiled : 2026-04-24 16:11:09
- * Command  : g++ ./thread_guard.cpp -o out && ./out
+ * Command  : g++ ./thread_guard.cpp -o out -std=c++23 -lpthread && ./out
  *
  * Hello, Thread!
  * Exception caught: std::exception

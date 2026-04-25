@@ -28,9 +28,9 @@ int main()
 		thr.join();                           // Call join() before thr's destructor is called
 	}
 } // Calls ~thr()
+
 /* === OUTPUT ===
- * Compiled : 2026-04-24 16:11:04
- * Command  : g++ ./thread_except_safe.cpp -o out && ./out
+ * Command  : g++ ./safe_exception.cpp -o out -std=c++23 -lpthread && ./out
  *
  * Exception caught: std::exception
  * Hello, Thread!
