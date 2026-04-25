@@ -21,9 +21,9 @@ int main() {
 	// Verify that it has been modified
 	cout << "str is now " << str << '\n';
 }
+
 /* === OUTPUT ===
- * Compiled : 2026-04-24 15:30:39
- * Command  : g++ ./thread_ref.cpp -o out && ./out
+ * Command  : g++ ./pass_ref.cpp -o out -lpthread && ./out
  *
  * str is now xyz
  */
