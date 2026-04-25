@@ -24,9 +24,9 @@ int main() {
 	// Check that the program is still running
 	cout << "Finished\n";
 }
+
 /* === OUTPUT ===
- * Compiled : 2026-04-24 16:11:11
- * Command  : g++ ./uncaught_exception.cpp -o out && ./out
+ * Command  : g++ ./uncaught_exception.cpp -o out -std=c++23 -lpthread && ./out
  *
  * terminate called after throwing an instance of 'std::exception'
  *   what():  std::exception

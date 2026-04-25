@@ -26,10 +26,9 @@ int main()
 		cout << "Exception caught: " << e.what() << '\n';
 	}
 }
+
 /* === OUTPUT ===
- * Compiled : 2026-04-24 16:11:06
- * Command  : g++ ./thread_except_unsafe.cpp -o out && ./out
+ * Command  : g++ ./unsafe_exception.cpp -o out -std=c++23 -lpthread && ./out
  *
- * Hello, Thread!
  * terminate called without an active exception
  */
