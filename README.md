@@ -46,6 +46,9 @@
 
 ### Usage
 
+[Optional] Setup git hooks
+- ./setup-hooks.sh
+
 Run each file:
 - g++ main.cpp -o out
 - ./out.exe
