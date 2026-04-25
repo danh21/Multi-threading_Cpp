@@ -11,7 +11,7 @@ find "$WORKSPACE" -name "*.cpp" | while read -r file; do
     echo "📄 Processing: $file"
 
     # ── Compile ───────────────────────────────
-    compile_error=$(g++ "$file" -o "$OUTPUT_BIN" -lpthread 2>&1)
+    compile_error=$(g++ "$file" -o "$OUTPUT_BIN" -std=c++23 -lpthread 2>&1)
     if [ $? -ne 0 ]; then
         echo "❌ Compile error: $file"
         echo "$compile_error"
@@ -51,7 +51,7 @@ find "$WORKSPACE" -name "*.cpp" | while read -r file; do
     # Append output block — exactly 1 blank line before
     {
         printf "\n/* === OUTPUT ===\n"
-        printf " * Command  : g++ %s -o out -lpthread && ./out\n" "$file"
+        printf " * Command  : g++ %s -o out -std=c++23 -lpthread && ./out\n" "$file"
         printf " *\n"
         echo "$output" | sed 's/^/ * /'
         printf " */"
