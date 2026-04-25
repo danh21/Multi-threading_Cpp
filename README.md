@@ -41,7 +41,8 @@
 
 ### Source
 
-- *.cpp: main source
+- src/*.cpp: main source
+- script/run_and_doc.sh: run test and save log
 
 ### Usage
 
@@ -49,7 +50,7 @@ Run each file:
 - g++ main.cpp -o out
 - ./out.exe
 
-Run multiple files and collect log
+Put script into source code folder, run:
 - ./run_and_doc.sh
 
 ### Reference
