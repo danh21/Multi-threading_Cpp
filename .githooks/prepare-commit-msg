@@ -1,0 +1,31 @@
+#!/bin/bash
+
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+
+# Only trigger for normal commits (not merge/amend)
+if [ -n "$COMMIT_SOURCE" ]; then
+    exit 0
+fi
+
+# Get staged folders
+staged_folders=$(git diff --cached --name-only | xargs -I{} dirname {} | sort -u)
+
+if [ -z "$staged_folders" ]; then
+    exit 0
+fi
+
+# Build suggestion block
+suggestion="# ── Last commits per staged folder ──────────────\n"
+while IFS= read -r folder; do
+    last_commit=$(git log --oneline -1 -- "$folder" 2>/dev/null)
+    if [ -n "$last_commit" ]; then
+        suggestion+="# 📁 $folder\n"
+        suggestion+="#    └─ $last_commit\n"
+    fi
+done <<< "$staged_folders"
+suggestion+="# ─────────────────────────────────────────────\n"
+
+# Prepend suggestion to commit message file
+current=$(cat "$COMMIT_MSG_FILE")
+printf "%b\n%s" "$suggestion" "$current" > "$COMMIT_MSG_FILE"
