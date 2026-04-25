@@ -11,7 +11,7 @@ find "$WORKSPACE" -name "*.cpp" | while read -r file; do
     echo "📄 Processing: $file"
 
     # ── Compile ───────────────────────────────
-    compile_error=$(g++ "$file" -o "$OUTPUT_BIN" 2>&1)
+    compile_error=$(g++ "$file" -o "$OUTPUT_BIN" -std=c++23 -lpthread 2>&1)
     if [ $? -ne 0 ]; then
         echo "❌ Compile error: $file"
         echo "$compile_error"
@@ -29,25 +29,33 @@ find "$WORKSPACE" -name "*.cpp" | while read -r file; do
         echo "✅ Done: $file"
     fi
 
-    # ── Check if output block already exists ──
+    # ── Replace or append output block ────────
     if grep -q "=== OUTPUT ===" "$file"; then
         echo "⚠️  Output block exists, replacing..."
-        # Remove old output block (from /* === OUTPUT === to end)
-        sed -i '/\/\* === OUTPUT ===/,/\*\//{ /\/\* === OUTPUT ===/!{ /\*\//!d }; /\/\* === OUTPUT ===/d; /\*\//d }' "$file"
-        # Remove trailing empty lines
-        sed -i 's/[[:space:]]*$//' "$file"
+
+        # Get line number of OUTPUT marker
+        marker_line=$(grep -n "/\* === OUTPUT ===" "$file" | head -1 | cut -d: -f1)
+
+        # Keep only lines before marker
+        head -n $((marker_line - 1)) "$file" > "$file.tmp"
+    else
+        cp "$file" "$file.tmp"
     fi
 
-    # ── Append output as comment block ────────
-    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    cat >> "$file" << EOF
-/* === OUTPUT ===
- * Compiled : $timestamp
- * Command  : g++ $file -o out && ./out
- *
-$(echo "$output" | sed 's/^/ * /')
- */
-EOF
+    # Strip trailing blank lines using awk
+    # Buffer blank lines, only print if followed by non-blank content
+    # → trailing blanks at EOF are discarded
+    awk '/^[[:space:]]*$/{p=p"\n"; next} {printf "%s",p; p=""; print}' "$file.tmp" > "$file"
+    rm -f "$file.tmp"
+
+    # Append output block — exactly 1 blank line before
+    {
+        printf "\n/* === OUTPUT ===\n"
+        printf " * Command  : g++ %s -o out -std=c++23 -lpthread && ./out\n" "$file"
+        printf " *\n"
+        echo "$output" | sed 's/^/ * /'
+        printf " */"
+    } >> "$file"
 
     echo "💾 Output appended to: $file"
 
